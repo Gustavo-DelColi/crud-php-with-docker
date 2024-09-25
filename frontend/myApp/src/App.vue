@@ -8,7 +8,7 @@
 
 <script>
 import axios from 'axios';
-
+import { API_ADVISE } from './config'; 
 export default {
   data() {
     return {
@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     fetchData() {
-      axios.get('http://localhost:8080')
+      axios.get(API_ADVISE)
         .then(response => {
           this.message = response.data;
         })

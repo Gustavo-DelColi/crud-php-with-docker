@@ -1,0 +1,1 @@
+export const API_ADVISE: string = 'http://localhost:8080';
