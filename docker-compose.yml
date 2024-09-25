@@ -1,10 +1,14 @@
 version: '3.8'
 services:
   php:
-    image: php:8.2-fpm
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: php-container
     volumes:
       - ./backend:/var/www/html
+    expose:
+      - "9000"
     networks:
       - my_network
 
