@@ -10,6 +10,7 @@ $user = 'myuser';
 $pass = 'mypassword';
 $dsn = "pgsql:host=$host;port=5432;dbname=$db;user=$user;password=$pass";
 
+
 $response = ['message' => 'Hello from the backend'];  // Resposta padrão
 
 try {
