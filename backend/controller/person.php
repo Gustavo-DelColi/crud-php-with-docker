@@ -1,25 +1,41 @@
 <?php
-class ControllerPerson extends Controller {
+class ControllerPerson  {
 	
 	private $error = array();
 
 	public function index() {
-		$this->load->model('model/person');
-		$results = $this->model_person->readPersons();
-		
-		$data = array();
-		foreach ($results as $result) {
-			$data[] = array(
-				'id'       			        => $result['person_id'],
-				'name'       			        => $result['person_name'],
-				'phone'       			        => $result['person_phone'],
-				'email'       			        => $result['person_email'],
-				
-			);	
-
+		header("Access-Control-Allow-Origin: http://localhost:3000");
+		header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+		header("Access-Control-Allow-Headers: Content-Type");
+		header("Content-Type: application/json");
+	
+		// Responda a solicitações OPTIONS
+		if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+			http_response_code(200);
+			exit;
 		}
-		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($data));
+		// $this->load->model('model/person');
+		// $results = $this->model_person->readPersons();
+		
+		// $data = array();
+		// foreach ($results as $result) {
+			// 	$data[] = array(
+		// 		'id'       			        => $result['person_id'],
+		// 		'name'       			        => $result['person_name'],
+		// 		'phone'       			        => $result['person_phone'],
+		// 		'email'       			        => $result['person_email'],
+				
+		// 	);	
+		
+		// }
+		// $data['success'][] = 'Cadastro realizado com sucesso.';
+		// $this->response->addHeader('Content-Type: application/json');
+		// $this->response->setOutput(json_encode($data));
+
+		header('Content-Type: application/json');
+		echo json_encode([
+    		'success' => 'Cadastro realizado com sucesso.'
+		]);
 
 	}
 

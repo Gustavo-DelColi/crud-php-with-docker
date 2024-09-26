@@ -1,6 +1,6 @@
 <?php
 
-class ModelPerson extends Model{
+class ModelPerson {
 
         // Construtor para garantir que a tabela seja criada ao instanciar a classe
         public function __construct($registry) {

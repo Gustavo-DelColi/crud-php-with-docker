@@ -2,7 +2,7 @@
   <div>
     <VContainer>
       <h1>Conexão com Backend PHP</h1>
-      <button @click="fetchData">Testar Conexão</button>
+      <button @click="fetchPersons">Testar Conexão</button>
       <p>{{ message }}</p>
       <VBtn @click="addDialog = true">Adicionar</VBtn>
       <div v-for="(person, index) in persons" key="index" class="d-flex">
@@ -170,8 +170,9 @@ export default {
     },
     fetchPersons() {
       axios
-        .get(`${API_ADVISE}/index.php?route=person`)  // Ajuste a URL conforme necessário
+        .get(`${API_ADVISE}/controller/person.php`)  // Ajuste a URL conforme necessário
         .then((response) => {
+          console.log("Resposta recebida:", response);
           this.teste = response.data;  // Armazena os dados no array
         })
         .catch((error) => {
