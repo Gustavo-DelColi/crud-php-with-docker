@@ -1,4 +1,4 @@
-# Nome do Projeto
+# Crud de cadastro de pessoas simples.
 
 Projeto de CRUD simples, usando PHP, Vue, Vuetify, Postgres e Docker.
 
