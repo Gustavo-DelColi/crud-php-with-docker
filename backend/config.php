@@ -4,8 +4,6 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-
-
 $host = 'postgres-container';
 $db = 'mydatabase';
 $user = 'myuser';
@@ -17,13 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
   exit; // Finaliza a execução para não processar mais nada
 }
 
+try {
+    $pdo = new PDO($dsn);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Para exibir erros de SQL
 
-
-// try {
-//     $conn = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
-//   } catch (\Throwable $th) {
-//     throw $th;
-//   }
-
-
-?>
+} catch (PDOException $e) {
+    echo json_encode(['db_connection_error' => $e->getMessage()]);
+    exit;
+}

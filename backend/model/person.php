@@ -1,10 +1,10 @@
 <?php
 
 class ModelPerson {
-    private $db; // Assume que a classe pai define a conexão ao banco de dados
+    private $db; 
 
-    public function __construct($registry) {
-        parent::__construct($registry);
+    public function __construct($pdo) {
+        $this->db = $pdo;
         $this->createTable();
     }
 
@@ -20,8 +20,8 @@ class ModelPerson {
     }
 
     public function createPerson($data) {
-        $stmt = $this->db->prepare("INSERT INTO people_db (person_name, person_phone, person_email, date_added) VALUES (?, ?, ?, NOW())");
-        $stmt->execute([$data['name'], $data['phone'], $data['email']]);
+        $stmt = $this->db->query("INSERT INTO people_db (person_name, person_phone, person_email, date_added) VALUES('" . $data['name'] . "', '" . $data['phone'] . "', '" . $data['email'] . "', NOW())");
+
     }
 
     public function readPersons() {

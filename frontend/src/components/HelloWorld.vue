@@ -30,23 +30,24 @@
           ></VTextField>
 
           <div class="d-flex ga-2">
-            <VBtn icon="mdi-trash-can-outline" color="error"></VBtn>
+            <VBtn
+              icon="mdi-trash-can-outline"
+              color="error"
+              @click="deletePerson(person)"
+            ></VBtn>
             <VBtn icon="mdi-pencil" color="info" @click="editPerson(person)"></VBtn>
           </div>
         </VCol>
         <div class="d-flex justify-center"></div>
       </div>
-
-      {{ teste }}
-      {{ addok }}
     </VContainer>
     <VDialog
       v-model="addDialog"
       max-width="500px
     "
     >
-      <VCard >
-      <VCol>
+      <VCard>
+        <VCol>
           <VTextField
             variant="outlined"
             label="Nome"
@@ -64,7 +65,7 @@
             v-model="add.phone"
           ></VTextField>
         </VCol>
-          <VCol>
+        <VCol>
           <VTextField
             variant="outlined"
             label="Email"
@@ -73,7 +74,7 @@
             hide-details
           ></VTextField>
         </VCol>
-   
+
         <VCol class="pt-3 d-flex ga-3">
           <VBtn color="info" @click="addPerson">Salvar</VBtn>
           <VBtn color="error" @click="addDialog = false">Cancelar</VBtn>
@@ -86,8 +87,8 @@
       max-width="500px
     "
     >
-      <VCard >
-      <VCol>
+      <VCard>
+        <VCol>
           <VTextField
             variant="outlined"
             label="Nome"
@@ -105,7 +106,7 @@
             v-model="edit.phone"
           ></VTextField>
         </VCol>
-          <VCol>
+        <VCol>
           <VTextField
             variant="outlined"
             label="Email"
@@ -114,10 +115,25 @@
             hide-details
           ></VTextField>
         </VCol>
-   
+
         <VCol class="pt-3 d-flex ga-3">
-          <VBtn color="info">Salvar</VBtn>
+          <VBtn color="info" @click="saveEdit">Salvar</VBtn>
           <VBtn color="error" @click="editDialog = false">Cancelar</VBtn>
+        </VCol>
+      </VCard>
+    </VDialog>
+
+    <VDialog
+      v-model="deleteDialog"
+      max-width="500px
+    "
+    >
+      <VCard>
+        <VCardTitle> Deseja realmente apagar o cadastro?</VCardTitle>
+
+        <VCol class="pt-3 d-flex ga-3">
+          <VBtn color="info" @click="saveDelete">Sim</VBtn>
+          <VBtn color="error" @click="deleteDialog = false">Não</VBtn>
         </VCol>
       </VCard>
     </VDialog>
@@ -133,28 +149,16 @@ export default {
       message: "",
       addDialog: false,
       editDialog: false,
-      edit:"",
+      deleteDialog: false,
+      edit: "",
+      delete: "",
       add: {
         name: "",
         phone: "",
         email: "",
       },
-      teste: [],
-      addok:"",
-      persons: [
-        {
-          id:'0',
-          name: "Gustavo",
-          phone: "43 99264382",
-          email: "asdasd@asdad.com",
-        },
-        {
-          id:'1',
-          name: "Tayla",
-          phone: "43 99264382",
-          email: "asdasd@asdad.com",
-        },
-      ],
+
+      persons: [],
     };
   },
   methods: {
@@ -170,10 +174,10 @@ export default {
     },
     fetchPersons() {
       axios
-        .get(`${API_ADVISE}/controller/person.php`)  // Ajuste a URL conforme necessário
+        .get(`${API_ADVISE}/controller/person.php`)
         .then((response) => {
-          console.log("Resposta recebida:", response);
-          this.teste = response.data;  // Armazena os dados no array
+          console.log("Resposta recebida:", response.data);
+          this.persons = response.data; // Armazena os dados no array
         })
         .catch((error) => {
           console.error("Erro ao buscar dados:", error);
@@ -182,20 +186,61 @@ export default {
 
     addPerson() {
       axios
-        .post(`${API_ADVISE}/index.php?route=person/add`, this.add)  // Ajuste a URL conforme necessário
+        .post(`${API_ADVISE}/controller/addPerson.php`, this.add)
         .then((response) => {
-          this.addok = response.data;  // Armazena os dados no array
-          console.log("Pessoa adicionada com sucesso:", response.data);
+          console.log("console", response.data);
         })
         .catch((error) => {
           console.error("Erro ao buscar dados:", error);
+        })
+        .finally(() => {
+          this.fetchPersons();
         });
     },
-    editPerson(person){
+    editPerson(person) {
       this.edit = person;
       this.editDialog = true;
-    
-    }
+    },
+
+    saveEdit() {
+      console.log("edit", this.edit);
+      axios
+        .post(`${API_ADVISE}/controller/updatePerson.php`, this.edit)
+        .then((response) => {
+          console.log("console", response.data);
+        })
+        .catch((error) => {
+          console.error("Erro ao buscar dados:", error);
+        })
+        .finally(() => {
+          this.fetchPersons();
+          this.editDialog = false;
+        });
+    },
+
+    deletePerson(person) {
+      this.delete = person;
+      this.deleteDialog = true;
+    },
+
+    saveDelete() {
+      console.log("delete", this.delete);
+      axios
+        .post(`${API_ADVISE}/controller/deletePerson.php`, this.delete)
+        .then((response) => {
+          console.log("console", response.data);
+        })
+        .catch((error) => {
+          console.error("Erro ao buscar dados:", error);
+        })
+        .finally(() => {
+          this.fetchPersons();
+          this.deleteDialog = false;
+        });
+    },
+  },
+  mounted() {
+    this.fetchPersons();
   },
 };
 </script>

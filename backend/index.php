@@ -1,32 +1,16 @@
 <?php
-header("Access-Control-Allow-Origin: *");  // Permite todas as origens
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-header("Content-Type: application/json");
-
-
-$host = 'postgres-container';
-$db = 'mydatabase';
-$user = 'myuser';
-$pass = 'mypassword';
-$dsn = "pgsql:host=$host;port=5432;dbname=$db;user=$user;password=$pass";
-
+require_once('./config.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
     exit; // Finaliza a execução para não processar mais nada
 }
 
-
-$response = ['message' => 'Hello from the backend'];  // Resposta padrão
-
-try {
-    $pdo = new PDO($dsn);
-    if ($pdo) {
-        $response['db_connection'] = 'Conexão com o PostgreSQL realizada com sucesso!';
-    }
-} catch (PDOException $e) {
-    $response['db_connection_error'] = $e->getMessage();
+$response = ['message' => 'Hello from the backend'];
+if ($pdo) {
+    $response['db_connection'] = 'Conexão com o PostgreSQL realizada com sucesso!';
 }
+
+
 echo json_encode($response);
 ?>
