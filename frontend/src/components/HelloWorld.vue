@@ -1,9 +1,10 @@
 <template>
   <div>
     <VContainer>
-      <h1>Conexão com Backend PHP</h1>
-      <button @click="fetchPersons">Testar Conexão</button>
+      <button @click="fetchData">Testar Conexão</button>
       <p>{{ message }}</p>
+      <br>
+      <h1>Crud de cadastro de pessoas simples.</h1>
       <VBtn @click="addDialog = true">Adicionar</VBtn>
       <div v-for="(person, index) in persons" key="index" class="d-flex">
         <VCol class="d-flex ga-3 align-center">
@@ -176,8 +177,7 @@ export default {
       axios
         .get(`${API_ADVISE}/controller/person.php`)
         .then((response) => {
-          console.log("Resposta recebida:", response.data);
-          this.persons = response.data; // Armazena os dados no array
+          this.persons = response.data; 
         })
         .catch((error) => {
           console.error("Erro ao buscar dados:", error);
@@ -187,13 +187,11 @@ export default {
     addPerson() {
       axios
         .post(`${API_ADVISE}/controller/addPerson.php`, this.add)
-        .then((response) => {
-          console.log("console", response.data);
-        })
         .catch((error) => {
           console.error("Erro ao buscar dados:", error);
         })
         .finally(() => {
+          this.addDialog = false;
           this.fetchPersons();
         });
     },
@@ -203,12 +201,8 @@ export default {
     },
 
     saveEdit() {
-      console.log("edit", this.edit);
       axios
         .post(`${API_ADVISE}/controller/updatePerson.php`, this.edit)
-        .then((response) => {
-          console.log("console", response.data);
-        })
         .catch((error) => {
           console.error("Erro ao buscar dados:", error);
         })
@@ -224,12 +218,8 @@ export default {
     },
 
     saveDelete() {
-      console.log("delete", this.delete);
       axios
         .post(`${API_ADVISE}/controller/deletePerson.php`, this.delete)
-        .then((response) => {
-          console.log("console", response.data);
-        })
         .catch((error) => {
           console.error("Erro ao buscar dados:", error);
         })

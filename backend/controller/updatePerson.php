@@ -8,6 +8,7 @@ class ControllerUpdatePerson {
         $this->model_person = new ModelPerson($pdo); 
     }
     public function index() {
+        $data = array();
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $postData = json_decode(file_get_contents('php://input'), true);
             $data = $this->model_person->updatePerson($postData);

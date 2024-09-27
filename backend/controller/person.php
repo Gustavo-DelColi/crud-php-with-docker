@@ -9,6 +9,7 @@ class ControllerPerson {
     }
 
     public function index() {
+        $data = array();
    		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $results = $this->model_person->readPersons();
             foreach ($results as $result){
@@ -21,9 +22,9 @@ class ControllerPerson {
             }
             	
 		}
-
         header('Content-Type: application/json'); // Assegure-se que o cabeçalho está correto
         echo json_encode($data);
+
     }
 
 
